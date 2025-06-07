@@ -36,7 +36,7 @@ local function update_contents(blocks, shift_by, include_path)
     end,
     -- If link paths are relative then prepend include file path
     Link = function (link)
-        if path.is_relative(link.target) then
+        if path.is_relative(link.target) and string.sub(path.filename(link.target), 1, 1) ~= '#' then
             link.target = path.normalize(path.join({include_path, link.target}))
         end
         return link
