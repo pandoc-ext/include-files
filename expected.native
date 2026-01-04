@@ -164,6 +164,13 @@
 , CodeBlock
     ( "" , [ "c" ] , [ ( "include" , "subdir/somecode.c" ) ] )
     ""
+, Header
+    1
+    ( "include-code" , [] , [] )
+    [ Str "Include" , Space , Str "Code" ]
+, CodeBlock
+    ( "" , [ "org" ] , [] )
+    "* Org header\n\nThis is /emphasized/.\n"
 , Header 1 ( "appendix" , [] , [] ) [ Str "Appendix" ]
 , Para
     [ Str "More"
