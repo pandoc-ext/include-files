@@ -6,13 +6,14 @@
 -- Module pandoc.path is required and was added in version 2.12
 PANDOC_VERSION:must_be_at_least '2.12'
 
+local pandoc = require 'pandoc'
 local List = require 'pandoc.List'
 local path = require 'pandoc.path'
 local system = require 'pandoc.system'
 
 --- Get include auto mode
 local include_auto = false
-function get_vars (meta)
+local function get_vars (meta)
   if meta['include-auto'] then
     include_auto = true
   end
@@ -20,7 +21,7 @@ end
 
 --- Keep last heading level found
 local last_heading_level = 0
-function update_last_level(header)
+local function update_last_level(header)
   last_heading_level = header.level
 end
 
