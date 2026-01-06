@@ -37,6 +37,13 @@ file-f.md
 subdir/file-g.md
 ```
 
+# Include Code
+
+``` {.include-as-code-block .org}
+// include org-mode file as code-block
+file-d.org
+```
+
 # Appendix
 
 More info goes here.

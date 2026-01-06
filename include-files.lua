@@ -62,9 +62,34 @@ local function update_contents(blocks, shift_by, include_path)
   return pandoc.walk_block(pandoc.Div(blocks), update_contents_filter).content
 end
 
+--- Include given file paths as code-blocks
+--- while keeping the remaining attributes.
+local function include_as_code_block(cb)
+  local _, match_pos = cb.classes:find('include-as-code-block')
+  if match_pos == nil then
+    return
+  end
+
+  cb.classes:remove(match_pos)
+  local paths = cb.text
+
+  cb.text = ""
+  for line in paths:gmatch('[^\n]+') do
+    if line:sub(1,2) ~= '//' then
+      local fh = io.open(line)
+      if not fh then
+        io.stderr:write("Cannot open file " .. line .. " | Skipping include-as-code-block\n")
+      else
+        cb.text = cb.text .. fh:read "*a"
+        fh:close()
+      end
+    end
+  end
+  return cb
+end
+
 --- Filter function for code blocks
-local transclude
-function transclude (cb)
+local function transclude (cb)
   -- ignore code blocks which are not of class "include".
   if not cb.classes:includes 'include' then
     return
@@ -124,5 +149,6 @@ end
 
 return {
   { Meta = get_vars },
-  { Header = update_last_level, CodeBlock = transclude }
+  { Header = update_last_level, CodeBlock = transclude },
+  { CodeBlock = include_as_code_block }
 }
